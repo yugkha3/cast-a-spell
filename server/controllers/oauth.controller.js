@@ -57,10 +57,10 @@ async function googleOAuth(req, res) {
             httpOnly: true,
             origin: process.env.BASE_URL_CLIENT,
             sameSite: "none",
-            secure: true
+            secure: true,
+            expires: new Date (Date.now() + 12096e5)
         });
         res.redirect(`${process.env.BASE_URL_CLIENT}`);
-        // res.status(200).send();
     } catch (err) {
         console.log(err)
     }
