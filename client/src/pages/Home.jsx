@@ -84,6 +84,7 @@ function Home() {
 			if (retryCount === 0) {
 				toast.error(`Model is still loading after ${maxRetries} retries. Try again in 5 minutes.`)
 				setRetryCount(maxRetries);
+				setIsGenerating(false)
 				return;
 			}
 
@@ -110,10 +111,24 @@ function Home() {
 				{userData.isTrained === true && <p className="text-xl text-center p-5">Great news! Your face has been successfully trained on the model. <br />Your unique username is <b><u>{userData.username}</u></b>. Please do not share this username with anyone else. <br />You can use this username to generate ultra-realistic AI avatars of yourself. </p>}
 				<div>
 
-					{userData.isTrained === true && <input type="text" placeholder={`a portrait of ${userData.username} as Thor`} className="input input-bordered input-xl w-full max-w-xl" value={input} onChange={onInputChange} />}
-					{userData.isTrained === false && <input type="text" placeholder="enter whatever you want to cast" className="input input-bordered input-xl w-full max-w-xl" value={input} onChange={onInputChange} />}
+					{userData.isTrained === true && <input type="text" placeholder={`a portrait of ${userData.username} as Thor`} className="input input-bordered input-xl w-full max-w-xl" value={input} onChange={onInputChange} onKeyDown={
+						(e) => {
+							if(e.key === 'Enter') {
+								generate();
+								setIsGenerating(true)
+							}
+						}
+					}/>}
+					{userData.isTrained === false && <input type="text" placeholder="enter whatever you want to cast" className="input input-bordered input-xl w-full max-w-xl" value={input} onChange={onInputChange} onKeyDown={
+						(e) => {
+							if(e.key === 'Enter') {
+								generate();
+								setIsGenerating(true)
+							}
+						}
+					}/>}
 
-					<button className="btn btn-sm mt-2 btn-primary normal-case" onClick={generate}> {isGenerating ? <Spinner /> : "Cast 🪄"}</button>
+					<button className="btn btn-sm mt-2 btn-primary normal-case" onClick={generate} > {isGenerating ? <Spinner /> : "Cast 🪄"}</button>
 					{/* <button className="btn btn-sm mt-2 btn-primary normal-case" onClick={generate}>Cast 🪄</button> */}
 				</div>
 				{img && (
